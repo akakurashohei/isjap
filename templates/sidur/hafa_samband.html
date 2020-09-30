@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %} | Hafa samband - お問い合わせ {% endblock %}
+{% load static %}
+{% block content %}
+
+<!-- Contact 2 start -->
+<br>
+<div class="contact-2 content-area-5">
+    <div class="container">
+        <!-- Main title -->
+        <form action="{% url 'hafa_samband' %}" method="POST" enctype="multipart/form-data">
+          {% include 'includes/messages.html' %}
+          {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="main-title text-center"><h4>Hafa samband - お問い合わせ</h4></div>
+                      </div>
+                        <div class="col-md-6 text-left">
+                            <div class="form-group name">
+                                <input type="text" name="name" class="form-control" placeholder="*Nafn - 氏名" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group email">
+                                <input type="email" name="email" class="form-control" placeholder="*Netfang - Eメールアドレス" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group subject">
+                                <input type="text" name="subject" class="form-control" placeholder="*Efni - 件名" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group message">
+                                <textarea class="form-control" name="message" rows="8" cols="80" placeholder="*Skilaboð - お問い合わせ内容" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="send-btn text-center">
+                                <button type="submit" class="btn btn-md btn-primary">Senda - 送信</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<!-- Contact 2 end -->
+
+
+{% endblock %}

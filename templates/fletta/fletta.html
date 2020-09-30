@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %} | {{fletta.uppflettiord}} ({{fletta.ordflokkur}}){% endblock %}
+
+{% block content %}
+{% load static %}
+
+{% include 'includes/messages.html' %}
+
+<div class="container">
+  <div class="row">
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <h1>{{fletta.uppflettiord}}</h1>
+      </div>
+      <div class="p-2 align-self-end">
+        <h6>{{fletta.ordflokkur}} {{fletta.ordflokkur.jp_heiti}}</h6>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="p-2">
+      <h6>Orðmynd - 語形： {{fletta.ordmynd}}</h6>
+    </div>
+  </div>
+</div>
+{% if fletta.beygingarmynd != NULL %}
+<div class="container">
+  <div class="row">
+    <div class="p-2">
+      <h6>Beygingar - 語形変化：{{fletta.beygingarmynd}} – (<a target="_blank" href="https://bin.arnastofnun.is/beyging/{{fletta.bin_id}}">BÍN</a>)</h6>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div class="container">
+  <div class="row">
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <h6>IPA: /{{fletta.ipa}}/</h6>
+      </div>
+{% if fletta.upptaka %}
+      <div class="p-2 align-self-end">
+        <figure>
+            <audio controls source src="{{fletta.upptaka.url}}">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+        </figure>
+      </div>
+{% endif %}
+    </div>
+  </div>
+</div>
+
+{% if fletta.efnisflokkur != NULL or fletta.malsnid != NULL %}
+<div class="container">
+  <div class="row">
+    <div class="d-flex flex-column bd-highlight">
+      <div class="p-2">
+        {% if fletta.efnisflokkur %}
+        <h6>Efnisflokkur - 分野：{{fletta.efnisflokkur}} {{fletta.efnisflokkur.jp_heiti}}</h6>
+        {% endif %}
+      </div>
+      <div class="p-2">
+        {% if fletta.malsnid %}
+        <h6>Málsnið - 言葉遣い：{{fletta.malsnid}} {{fletta.malsnid.jp_heiti}}</h6>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="container">
+  {% for jp_jafnheiti in jp_jafnheiti_list %}
+  <div class="row">
+    <div class="d-flex flex-column bd-highlight">
+      <div class="p-2">
+        <h3>{{jp_jafnheiti}}</h3>
+      </div>
+    </div>
+  </div>
+  {% if jp_jafnheiti.ath %}
+  <div class="p-2 align-self-end">
+    <h6>Ath - 注： {{jp_jafnheiti.ath}}</h6>
+  </div>
+  {% endif %}
+  {% if jp_jafnheiti.mynd %}
+  <div class="p-2 align-self-end">
+    <img src="{{jp_jafnheiti.mynd.url}}" class="img-fluid" alt="image">
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+<!--Comments-->
+<div class="container">
+  <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modal1">
+    Um uppflettiorðið - この見出し語について
+  </button>
+  <div class="modal fade" id="modal1" tabindex="-1"
+        role="dialog" aria-labelledby="label1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="label1">Um uppflettiorðið - この見出し語について</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'inquiry' %}" method="POST">
+            {% csrf_token %}
+              <div class="form-group">
+                <div class="row">
+                  <div class="col">
+                    <input type="text" name="name" class="form-control" placeholder="Nafn - 氏名" required>
+                    <input type="text" name="email" class="form-control" placeholder="Netfang - Eメールアドレス" required>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="text" name="lemma" class="form-control" value="{{fletta.uppflettiord}}" readonly>
+              </div>
+              <div class="form-group">
+                <input type="hidden" name="lemma_id" class="form-control" value="{{fletta.id}}" readonly>
+              </div>
+              <div class="form-group">
+                <select class="form-control" name="subject">
+                  <option value="Um jafnheifni á uppflettiorðinu - 見出し語の翻訳について">Um jafnheifni á uppflettiorðinu - 見出し語の翻訳について</option>
+                  <option value="Um orðflokkur - 品詞について">Um orðflokkur - 品詞について</option>
+                  <option value="Um beygingarmynd - 格変化について">Um beygingarmynd - 格変化について</option>
+                  <option value="Um hljóðritun á uppflettiorðinu - 発音表記について">Um hljóðritun á uppflettiorðinu - 発音表記について</option>
+                  <option value="Um þýðingar á dæmum - 例文の翻訳について">Um þýðingar á dæmum - 例文の翻訳について</option>
+                  <option value="Um orðastæður - 慣用句について">Um orðastæður - 慣用句について</option>
+                  <option value="Annað - その他">Annað - その他</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <textarea name="message" class="form-control" placeholder="Skilaboð - お問い合わせ内容" required></textarea>
+              </div>
+              <hr>
+<!-- reCAPTCHA -->
+              <input type="submit" value="Senda - 送信" class="btn btn-block btn-primary">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+{% endblock %}

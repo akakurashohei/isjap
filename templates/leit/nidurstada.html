@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Niðurstaða - 検索結果{{ block.super }}{% endblock %}
+{% block content %}
+            <div class="container-fluid">
+                <div class="header d-flex justify-content-center"><h3>Niðurstaða - 検索結果</h3></div>
+                <br>
+                {% if result_list %}
+                {% for result in result_list %}
+                    <nav class="row d-flex justify-content-center">
+                      <div class="col-2">
+                        <a href="{% url 'fletta:fletta' pk=result.id %}">{{result.uppflettiord}}</a>
+                      </div>
+                      <div class="col-2">
+                        {{result.ordflokkur}}
+                      </div>
+                    </nav>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="d-flex justify-content-center">
+                    <p>Það er engin slík fletta - お探しの見出し語は収録されていません。</p>
+                </div>
+                {% endif %}
+
+
+{% endblock %}

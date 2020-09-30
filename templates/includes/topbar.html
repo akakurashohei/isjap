@@ -1,0 +1,29 @@
+{% load static %}
+
+<!-- Top header start -->
+<header class="top-header">
+  <div class="container-fluid">
+    <div class="d-flex bd-highlight">
+      <div class="p-2 flex-grow-1 bd-highlight">
+        <a href="{% url 'heima' %}"><h1>Ísjap</h1></a>
+      </div>
+      <div class="p-2 bd-highlight align-self-end">Íslensk-japönsk veforðabók</div>
+      <div class="p-2 bd-highlight align-self-end">氷日オンライン辞典</div>
+    </div>
+  </div>
+  <br>
+  <div class="container-fluid" style="height:50px;">
+      <nav class="row d-flex justify-content-center">
+        <div class="col-sm align-self-end">
+          <a href="{% url 'heima' %}">Heima - ホーム</a>
+        </div>
+        <div class="col-sm align-self-end">
+          <a href="{% url 'um_isjap' %}">Um Ísjap - Ísjap について</a>
+        </div>
+        <div class="col-sm align-self-end">
+          <a href="{% url 'hafa_samband' %}">Hafa samband - お問い合わせ</a>
+        </div>
+      </nav>
+    </div>
+</header>
+<!-- Top header end -->
